@@ -1,48 +1,10 @@
-import { TodoItemType } from '@/types'
-import React, { useState } from 'react'
+import React from 'react'
 import { FaPlus } from 'react-icons/fa6'
-import { v4 } from 'uuid'
 import TodoItem from './TodoItem'
+import { useTodoStore } from '@/stores/useTodoStore'
 
 export default function TodoList() {
-  const [todos, setTodos] = useState<TodoItemType[]>([])
-
-  const addTodo = () => {
-    setTodos((prev) => [
-      ...prev,
-      {
-        id: v4(),
-        text: 'New Todo',
-        done: false,
-      },
-    ])
-  }
-
-  const updateTodoDone = (id: string, done: boolean) => {
-    setTodos((prev) =>
-      prev.map((todo) => {
-        if (todo.id === id) {
-          todo.done = done
-        }
-        return todo
-      })
-    )
-  }
-
-  const updateTodoText = (id: string, text: string) => {
-    setTodos((prev) =>
-      prev.map((todo) => {
-        if (todo.id === id) {
-          todo.text = text
-        }
-        return todo
-      })
-    )
-  }
-
-  const deleteTodo = (id: string) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id))
-  }
+  const { todos, addTodo } = useTodoStore()
 
   return (
     <div className="p-8 w-full text-center">
@@ -60,13 +22,7 @@ export default function TodoList() {
         {todos
           .filter((todo) => !todo.done)
           .map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              updateTodoText={updateTodoText}
-              updateTodoDone={updateTodoDone}
-              deleteTodo={deleteTodo}
-            />
+            <TodoItem key={todo.id} todo={todo} />
           ))}
       </>
       <h1 className="py-3">Completed Todos</h1>
@@ -74,13 +30,7 @@ export default function TodoList() {
         {todos
           .filter((todo) => todo.done)
           .map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              updateTodoText={updateTodoText}
-              updateTodoDone={updateTodoDone}
-              deleteTodo={deleteTodo}
-            />
+            <TodoItem key={todo.id} todo={todo} />
           ))}
       </>
     </div>

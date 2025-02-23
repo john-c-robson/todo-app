@@ -2,20 +2,15 @@ import { TodoItemType } from '@/types'
 import React from 'react'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import Checkbox from './Checkbox'
+import { useTodoStore } from '@/stores/useTodoStore'
 
 interface TodoItemProps {
   todo: TodoItemType
-  updateTodoText: (id: string, text: string) => void
-  updateTodoDone: (id: string, done: boolean) => void
-  deleteTodo: (id: string) => void
 }
 
-export default function TodoItem({
-  todo,
-  updateTodoText,
-  updateTodoDone,
-  deleteTodo,
-}: TodoItemProps) {
+export default function TodoItem({ todo }: TodoItemProps) {
+  const { updateTodoDone, deleteTodo, updateTodoText } = useTodoStore()
+
   return (
     <>
       <div
